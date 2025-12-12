@@ -125,12 +125,12 @@ app.get('/hiking',function(req,res){
 
 app.get('/inca',function(req,res){
 
-  res.render('inca');
+  res.render('inca',{message:null});
 });
 
 app.get('/annapurna',function(req,res){
 
-  res.render('annapurna');
+  res.render('annapurna',{message:null});
 });
 
 
@@ -143,13 +143,13 @@ app.get('/cities',function(req,res){
 
 app.get('/paris',function(req,res){
 
-  res.render('paris');
+  res.render('paris',{message:null});
 });
 
 
 app.get('/rome',function(req,res){
 
-  res.render('rome');
+  res.render('rome',{message:null});
 });
 
 
@@ -163,14 +163,123 @@ app.get('/islands',function(req,res){
 
 app.get('/bali',function(req,res){
 
-  res.render('bali');
+  res.render('bali',{message:null});
 });
 
 
 
 app.get('/santorini',function(req,res){
 
-  res.render('santorini');
+  res.render('santorini',{message:null});
+});
+
+//-----------------------------------------
+app.post('/annapurna',function(req,res){
+  db.collection("myCollection").findOne({view: "annapurna"}).then (result => {
+    if(!result){
+      db.collection('myCollection').insertOne({view: "annapurna"}).then(()=> {res.render('annapurna', {message: "Added successfully"});})
+     .catch(err => {console.error(err);
+            res.render('annapurna', { message: "Server Error while adding" });
+          });
+    }
+    else{
+      res.render('annapurna', {message: "CAN'T ADD since view already exists"});
+    }
+})
+.catch(err => {
+      console.error(err);
+      res.render('annapurna', { message: "Server Error while checking database" });
+    });
+});
+
+app.post('/inca',function(req,res){
+  db.collection("myCollection").findOne({view: "inca"}).then (result => {
+    if(!result){
+      db.collection('myCollection').insertOne({view: "inca"}).then(()=> {res.render('inca', {message: "Added successfully"});})
+     .catch(err => {console.error(err);
+            res.render('inca', { message: "Server Error while adding" });
+          });
+    }
+    else{
+      res.render('inca', {message: "CAN'T ADD since view already exists"});
+    }
+})
+.catch(err => {
+      console.error(err);
+      res.render('inca', { message: "Server Error while checking database" });
+    });
+});
+
+app.post('/bali',function(req,res){
+  db.collection("myCollection").findOne({view: "bali"}).then (result => {
+    if(!result){
+      db.collection('myCollection').insertOne({view: "bali"}).then(()=> {res.render('bali', {message: "Added successfully"});})
+     .catch(err => {console.error(err);
+            res.render('bali', { message: "Server Error while adding" });
+          });
+    }
+    else{
+      res.render('bali', {message: "CAN'T ADD since view already exists"});
+    }
+})
+.catch(err => {
+      console.error(err);
+      res.render('bali', { message: "Server Error while checking database" });
+    });
+});
+
+app.post('/paris',function(req,res){
+  db.collection("myCollection").findOne({view: "paris"}).then (result => {
+    if(!result){
+      db.collection('myCollection').insertOne({view: "paris"}).then(()=> {res.render('paris', {message: "Added successfully"});})
+     .catch(err => {console.error(err);
+            res.render('paris', { message: "Server Error while adding" });
+          });
+    }
+    else{
+      res.render('paris', {message: "CAN'T ADD since view already exists"});
+    }
+})
+.catch(err => {
+      console.error(err);
+      res.render('paris', { message: "Server Error while checking database" });
+    });
+});
+
+app.post('/rome',function(req,res){
+  db.collection("myCollection").findOne({view: "rome"}).then (result => {
+    if(!result){
+      db.collection('myCollection').insertOne({view: "rome"}).then(()=> {res.render('rome', {message: "Added successfully"});})
+     .catch(err => {console.error(err);
+            res.render('rome', { message: "Server Error while adding" });
+          });
+    }
+    else{
+      res.render('rome', {message: "CAN'T ADD since view already exists"});
+    }
+})
+.catch(err => {
+      console.error(err);
+      res.render('rome', { message: "Server Error while checking database" });
+    });
+});
+
+app.post('/santorini',function(req,res){
+  db.collection("myCollection").findOne({view: "santorini"}).then (result => {
+    if(!result){
+      db.collection('myCollection').insertOne({view: "santorini"}).then(()=> {res.render('santorini', {message: "Added successfully"});})
+     .catch(err => {console.error(err);
+            res.render('santorini', { message: "Server Error while adding" });
+          });
+    }
+    else{
+      res.render('santorini', {message: "CAN'T ADD since view already exists"});
+    }
+})
+.catch(err => {
+      console.error(err);
+      res.render('santorini', { message: "Server Error while checking database" });
+    });
 });
 
 
