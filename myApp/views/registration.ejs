@@ -20,6 +20,15 @@
             color: white;
             -webkit-text-stroke: 0.5px black;
         }
+        .message {
+            margin-left: auto; 
+            margin-right: auto;
+            margin-top: 20px;  
+            background-color: rgba(200, 200, 200, 0.6); 
+            text-align: center;  
+            width:fit-content;
+            color: red;
+        }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,14 +45,17 @@
     <div class="cont">
         <form method='post' action='/register'>
             Username: <br>
-            <input type="text" id="user" name="username"> <br>
+            <input type="text" id="user" name="username" required> <br>
             Password: <br>
-            <input type="password" id="password" name="password"> <br> <br>
+            <input type="password" id="password" name="password" required> <br> <br>
             <input type="submit" id="simple_click" class="btn btn-secondary" value="Register"> <br>
         </form>
     </div>
     <% if (error) { %>
-        <p style="color:red;"><%= error %></p>
+        <br><br><br><br>
+        <div class="message">
+            <h2><%= error %></h2>
+        </div>
     <% } %>
 </body>
 

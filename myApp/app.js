@@ -36,7 +36,8 @@ const db = client.db('myDB');
 // });
 
 app.get('/', function(req, res){
-  res.render('login',  { error: null })  
+  const message = req.query.message || null;
+  res.render('login',  { message })  
 });
 
 app.get('/registration', function(req, res){
@@ -53,7 +54,11 @@ app.post('/register', function(req, res){
       if(findResult) { // not null
         return res.render('registration', {error: "Username already exists. Please choose a different username."});
       }
-      // if null then add the records
+      
+      if(uName === "" || pass === ""){// field left empty
+        return res.render('registration', {error: "username or password was left blank. Please try again"});
+      }
+
       return db.collection('myCollection')
         .insertOne({
           username: uName,
@@ -64,7 +69,7 @@ app.post('/register', function(req, res){
     .then(insertResult =>{
         if(!insertResult)
           return;  
-      return res.redirect('/'); // go to login page if succesfull
+      return res.redirect("/?message=Account+regestered+succesfully"); // go to login page if succesfull
         
     })
     .catch(err => {
@@ -86,7 +91,7 @@ app.post('/',  function(req, res) {
 
             if (!user) {
                 // Login failed — reload page with error message
-                return res.render('login', {error: "Invalid username or password!"});
+                return res.render('login', {message: "Invalid username or password!"});
             }
 
             // Successful login — create session
