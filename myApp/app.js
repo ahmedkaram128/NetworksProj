@@ -29,10 +29,8 @@ const { MongoClient } = require('mongodb'); //import mongodb
 //connect mongoDB to the client (localhost)
 const client = new MongoClient("mongodb://127.0.0.1:27017");  
 client.connect();
-const db = client.db('networksWebApp'); 
-// create database in mongoDb and name it 'networksWebApp', also create a collection inside it and name it 'accounts'
+const db = client.db('myDB'); 
 
- 
 // app.get('/', function(req, res) {
 //   res.render('index', { title: "express" });
 // });
@@ -49,14 +47,14 @@ app.post('/register', function(req, res){
   const uName = req.body.username;
   const pass = req.body.password;
 
-  db.collection('accounts')
+  db.collection('myCollection')
     .findOne({username: uName})
     .then(findResult => {
       if(findResult) { // not null
         return res.render('registration', {error: "Username already exists. Please choose a different username."});
       }
       // if null then add the records
-      return db.collection('accounts')
+      return db.collection('myCollection')
         .insertOne({
           username: uName,
           password: pass
@@ -82,7 +80,7 @@ app.post('/',  function(req, res) {
     const username = req.body.username;
     const password = req.body.password;
 
-    db.collection("accounts")
+    db.collection("myCollection")
         .findOne({ username: username, password: password })
         .then(user => {
 
