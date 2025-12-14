@@ -175,9 +175,10 @@ app.get('/santorini',function(req,res){
 
 //-----------------------------------------
 app.post('/annapurna',function(req,res){
-  db.collection("myCollection").findOne({view: "annapurna"}).then (result => {
+  const user=req.session.user.username;
+  db.collection("myCollection").findOne({username: user, view: "annapurna"}).then (result => {
     if(!result){
-      db.collection('myCollection').insertOne({view: "annapurna"}).then(()=> {res.render('annapurna', {message: "Added successfully"});})
+      db.collection('myCollection').insertOne({username: user, view: "annapurna"}).then(()=> {res.render('annapurna', {message: "Added successfully"});})
      .catch(err => {console.error(err);
             res.render('annapurna', { message: "Server Error while adding" });
           });
@@ -193,9 +194,10 @@ app.post('/annapurna',function(req,res){
 });
 
 app.post('/inca',function(req,res){
-  db.collection("myCollection").findOne({view: "inca"}).then (result => {
+  const user=req.session.user.username;
+  db.collection("myCollection").findOne({username: user, view: "inca"}).then (result => {
     if(!result){
-      db.collection('myCollection').insertOne({view: "inca"}).then(()=> {res.render('inca', {message: "Added successfully"});})
+      db.collection('myCollection').insertOne({username: user, view: "inca"}).then(()=> {res.render('inca', {message: "Added successfully"});})
      .catch(err => {console.error(err);
             res.render('inca', { message: "Server Error while adding" });
           });
@@ -211,9 +213,10 @@ app.post('/inca',function(req,res){
 });
 
 app.post('/bali',function(req,res){
-  db.collection("myCollection").findOne({view: "bali"}).then (result => {
+  const user=req.session.user.username;
+  db.collection("myCollection").findOne({username: user, view: "bali"}).then (result => {
     if(!result){
-      db.collection('myCollection').insertOne({view: "bali"}).then(()=> {res.render('bali', {message: "Added successfully"});})
+      db.collection('myCollection').insertOne({username: user, view: "bali"}).then(()=> {res.render('bali', {message: "Added successfully"});})
      .catch(err => {console.error(err);
             res.render('bali', { message: "Server Error while adding" });
           });
@@ -229,9 +232,10 @@ app.post('/bali',function(req,res){
 });
 
 app.post('/paris',function(req,res){
-  db.collection("myCollection").findOne({view: "paris"}).then (result => {
+  const user=req.session.user.username;
+  db.collection("myCollection").findOne({username: user, view: "paris"}).then (result => {
     if(!result){
-      db.collection('myCollection').insertOne({view: "paris"}).then(()=> {res.render('paris', {message: "Added successfully"});})
+      db.collection('myCollection').insertOne({username: user, view: "paris"}).then(()=> {res.render('paris', {message: "Added successfully"});})
      .catch(err => {console.error(err);
             res.render('paris', { message: "Server Error while adding" });
           });
@@ -247,9 +251,10 @@ app.post('/paris',function(req,res){
 });
 
 app.post('/rome',function(req,res){
-  db.collection("myCollection").findOne({view: "rome"}).then (result => {
+  const user=req.session.user.username;
+  db.collection("myCollection").findOne({username: user, view: "rome"}).then (result => {
     if(!result){
-      db.collection('myCollection').insertOne({view: "rome"}).then(()=> {res.render('rome', {message: "Added successfully"});})
+      db.collection('myCollection').insertOne({username: user, view: "rome"}).then(()=> {res.render('rome', {message: "Added successfully"});})
      .catch(err => {console.error(err);
             res.render('rome', { message: "Server Error while adding" });
           });
@@ -265,9 +270,10 @@ app.post('/rome',function(req,res){
 });
 
 app.post('/santorini',function(req,res){
-  db.collection("myCollection").findOne({view: "santorini"}).then (result => {
+  const user=req.session.user.username;
+  db.collection("myCollection").findOne({username: user, view: "santorini"}).then (result => {
     if(!result){
-      db.collection('myCollection').insertOne({view: "santorini"}).then(()=> {res.render('santorini', {message: "Added successfully"});})
+      db.collection('myCollection').insertOne({username: user, view: "santorini"}).then(()=> {res.render('santorini', {message: "Added successfully"});})
      .catch(err => {console.error(err);
             res.render('santorini', { message: "Server Error while adding" });
           });
