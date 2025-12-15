@@ -288,7 +288,60 @@ app.post('/santorini',function(req,res){
     });
 });
 
+//----------search
+let viewPages = new Set();
 
+function loadViewPages() {
+  try {
+    const viewsDir = path.join(__dirname, 'views');
+    const files = fs.readdirSync(viewsDir);
+    files.forEach(f => {
+      if (f.endsWith('.ejs')) {
+        viewPages.add(f.replace(/\.ejs$/, '').toLowerCase());
+      }
+    });
+  } catch (e) {
+    console.error('Failed to load view pages:', e);
+  }
+}
+
+app.post('/search', async function(req, res) {
+  try {
+    const q = (req.body.Search || '').trim();
+    if (!q) {
+      return res.render('searchresults', { results: [], query: '' });
+    }
+    
+    const results = await collection
+      .find({
+        type: 'destination',
+        name: { $regex: q, $options: 'i' }
+      })
+      .limit(50)
+      .toArray();
+   
+    const firstWordSlug = s => (s || '').trim().split(/\s+/)[0].toLowerCase();
+    const enriched = results.map(item => {
+      const slug = item.slug || firstWordSlug(item.name || '');
+      return { ...item, slug };
+    });
+    res.render('searchresults', { results: enriched, query: q });
+  } catch (err) {
+    console.error('Search error:', err);
+    res.status(500).render('searchresults', { results: [], query: req.body.Search || '' });
+  }
+});
+
+
+app.get('/:page', function(req, res, next) {
+  const page = (req.params.page || '').toLowerCase();
+  if (viewPages.has(page)) {
+    return res.render(page);
+  }
+  return next();
+});
+
+loadViewPages();
 
 
 

@@ -38,5 +38,25 @@
             </form>
         </div>
     </nav>
+    <div class="container">
+        <h1>Results for: <%= (typeof query !== 'undefined' ? query : '') %></h1>
+        <% if (typeof results !== 'undefined' && results.length > 0) { %>
+            <ul class="list-group">
+                <% results.forEach(function(item){ %>
+                    <li class="list-group-item">
+                        <a href="/<%= item.slug %>"><strong><%= item.name %></strong></a>
+                        <% if (item.description) { %>
+                            <div><%= item.description %></div>
+                        <% } %>
+                        <% if (item.location) { %>
+                            <div><small><%= item.location %></small></div>
+                        <% } %>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } else { %>
+            <div class="alert alert-info">No matching places found.</div>
+        <% } %>
+    </div>
 </body>
 </html>
