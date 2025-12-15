@@ -1,4 +1,4 @@
-
+const fs = require('fs');
 var express = require('express');
 var path = require('path');
 var app = express(); 
@@ -30,10 +30,6 @@ const { MongoClient } = require('mongodb'); //import mongodb
 const client = new MongoClient("mongodb://127.0.0.1:27017");  
 client.connect();
 const db = client.db('myDB'); 
-
-// app.get('/', function(req, res) {
-//   res.render('index', { title: "express" });
-// });
 
 app.get('/', function(req, res){
   const message = req.query.message || null;
