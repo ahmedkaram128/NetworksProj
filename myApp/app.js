@@ -131,7 +131,7 @@ try {
   } catch (e) {
     console.error('Failed to load view pages:', e);
   }
-}
+
 
 app.post('/search', async function(req, res) {
   try {
