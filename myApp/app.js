@@ -132,9 +132,7 @@ app.get('/wanttogo', function(req, res){
 });
 
 
-app.post('/search', async function(req, res) {
-    res.render('searchresults', { results: [], query: '' });
-}); 
+
 
 // Helper to load pages
 let viewPages = new Set();
@@ -154,7 +152,7 @@ app.post('/search', async function(req, res) {
       return res.render('searchresults', { results: [], query: '' });
     }
     
-    const results = await collection
+    const results = await db.collection("myCollection")
       .find({
         type: 'destination',
         name: { $regex: q, $options: 'i' }
