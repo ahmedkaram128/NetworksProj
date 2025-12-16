@@ -71,6 +71,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/wanttogo">My Want-to-Go List</a>
+                </li>
             </ul>
             <form method="POST" action='/search' class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" name="Search" type="search" placeholder="Search"
@@ -79,19 +85,25 @@
             </form>
         </div>
     </nav>
+    
     <div class="container1">
         <img id="image" src="/annapurna.png" width="193" height="300">
     </div>
+    
     <div class="container2">
-        Annapurna Circuit has been voted as the best long-distance trek in the world, as it combined a wide variety of climate zones from tropics at 600m above sea level to the arctic at 5416m above sea level at the Thorong La pass and cultural variety from Hindu villages at the low foothills to the Tibetan culture of Manang.
+        <h2>Annapurna Circuit</h2>
+        <p>Annapurna Circuit has been voted as the best long-distance trek in the world, as it combined a wide variety of climate zones from tropics at 600m above sea level to the arctic at 5416m above sea level at the Thorong La pass and cultural variety from Hindu villages at the low foothills to the Tibetan culture of Manang.</p>
     </div>
+    
     <div class="wanttogo">
-        <form method="POST">        
-        <button id="wanttogo" class="btn btn-secondary ml-3">Add to Want-to-Go List</button>
-    </form>
+        <!-- FIXED: Added action="/annapurna" -->
+        <form method="POST" action="/annapurna">        
+            <button id="wanttogo" class="btn btn-success ml-3">Add to Want-to-Go List</button>
+        </form>
     </div>
+    
     <div class="video">
-            <iframe width="480"
+        <iframe width="480"
             height="360"
             src="https://www.youtube.com/embed/DOb_N1R8LmQ?si=D1gyuqvAYJ9QST0V"
             title="YouTube video player"
@@ -99,13 +111,25 @@
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
             referrerpolicy="strict-origin-when-cross-origin" 
             allowfullscreen>
-            </iframe>
+        </iframe>
     </div>
+    
     <% if (message) { %>
         <br><br><br><br>
         <div class="message">
-            <h2><%= message %></h2>
+            <h3><%= message %></h3>
         </div>
     <% } %>
+    
+    <!-- JavaScript for debugging -->
+    <script>
+        console.log("Annapurna page loaded");
+        
+        // Add event listener to form for debugging
+        document.querySelector('form[action="/annapurna"]').addEventListener('submit', function(e) {
+            console.log("Form submitted to /annapurna");
+        });
+    </script>
+
 </body>
 </html>
