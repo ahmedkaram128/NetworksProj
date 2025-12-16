@@ -128,7 +128,37 @@ try {
     fs.readdirSync(path.join(__dirname, 'views')).forEach(f => {
         if (f.endsWith('.ejs')) viewPages.add(f.replace(/\.ejs$/, '').toLowerCase());
     });
-} catch (e) {}
+  } catch (e) {
+    console.error('Failed to load view pages:', e);
+  }
+}
+
+app.post('/search', async function(req, res) {
+  try {
+    const q = (req.body.Search || '').trim();
+    if (!q) {
+      return res.render('searchresults', { results: [], query: '' });
+    }
+    
+   const results = await db.collection('myCollection')
+      .find({
+        type: 'destination',
+        name: { $regex: q, $options: 'i' }
+      })
+      .limit(50)
+      .toArray();
+   
+    const firstWordSlug = s => (s || '').trim().split(/\s+/)[0].toLowerCase();
+    const enriched = results.map(item => {
+      const slug = item.slug || firstWordSlug(item.name || '');
+      return { ...item, slug };
+    });
+    res.render('searchresults', { results: enriched, query: q });
+  } catch (err) {
+    console.error('Search error:', err);
+    res.status(500).render('searchresults', { results: [], query: req.body.Search || '' });
+  }
+});
 
 
 app.get('/:page', function(req, res, next) {
