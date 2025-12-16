@@ -66,18 +66,32 @@ app.get('/home', (req, res) => {
 
 
 function handleAddDest(req, res, viewName) {
+
     if (!req.session.user) return res.redirect("/");
+    
     const user = req.session.user.username;
 
-    db.collection("myCollection").updateOne(
-        { username: user },
-        { $addToSet: { wishlist: viewName } } 
-    )
-    .then(() => res.render(viewName, { message: "Added successfully" }))
-    .catch(err => {
-        console.error(err);
-        res.render(viewName, { message: "Server Error" });
-    });
+    db.collection("myCollection").findOne({ username: user })
+        .then(doc => {
+            if (doc.wishlist && doc.wishlist.includes(viewName)) {
+                return res.render(viewName, { message: "Destination already in your list!" });
+            }
+            db.collection("myCollection").updateOne(
+                { username: user },
+                { $push: { wishlist: viewName } } 
+            )
+            .then(() => {
+                res.render(viewName, { message: "Added successfully" });
+            })
+            .catch(err => {
+                console.error(err);
+                res.render(viewName, { message: "Server Error" });
+            });
+        })
+        .catch(err => {
+            console.error(err);
+            res.render(viewName, { message: "Server Error" });
+        });
 }
 
 // GET Routes
