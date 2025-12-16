@@ -27,25 +27,67 @@ const db = client.db('myDB');
 
 
 app.get('/', (req, res) => res.render('login', { message: req.query.message || null }));
-app.get('/registration', (req, res) => res.render('registration', { error: null }));
+pp.get('/registration', function(req, res){
+
+  res.render('registration',  { error: null })
+
+});
+
 
 app.post('/register', function(req, res){
+
   const uName = req.body.username;
+
   const pass = req.body.password;
 
-  db.collection('myCollection').findOne({username: uName})
+  db.collection('myCollection')
+
+    .findOne({username: uName})
+
     .then(findResult => {
-      if(findResult) return res.render('registration', {error: "Username taken."});
-      if(uName === "" || pass === "") return res.render('registration', {error: "Empty fields."});
-      
-      return db.collection('myCollection').insertOne({ 
-          username: uName, 
-          password: pass,
-          wishlist: [] 
-      });
+
+      if(findResult) { // not null
+
+        return res.render('registration', {error: "Username already exists. Please choose a different username."});
+
+      }
+
+      if(uName === "" || pass === ""){// field left empty
+
+        return res.render('registration', {error: "username or password was left blank. Please try again"});
+
+      }
+
+      return db.collection('myCollection')
+
+        .insertOne({
+
+          username: uName,
+
+          password: pass
+
+        });
     })
-    .then(() => res.redirect("/?message=Account+registered"))
-    .catch(err => res.status(500).send("Server error"));  
+
+    .then(insertResult =>{
+
+        if(!insertResult)
+          return;  
+      return res.redirect("/?message=Account+regestered+succesfully"); // go to login page if succesfull
+    })
+
+    .catch(err => {
+
+      console.error(err);
+
+      return res
+
+        .status(500)
+
+        .send("Server error.");
+
+    });  
+
 });
 
 app.post('/', function(req, res) {
