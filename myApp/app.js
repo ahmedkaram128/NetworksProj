@@ -27,7 +27,7 @@ const db = client.db('myDB');
 
 
 app.get('/', (req, res) => res.render('login', { message: req.query.message || null }));
-pp.get('/registration', function(req, res){
+app.get('/registration', function(req, res){
 
   res.render('registration',  { error: null })
 
