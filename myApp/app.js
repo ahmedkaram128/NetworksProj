@@ -117,11 +117,6 @@ app.get('/wanttogo', function(req, res){
         .catch(err => res.status(500).send("Server Error"));
 });
 
-
-app.post('/search', async function(req, res) {
-    res.render('searchresults', { results: [], query: '' });
-}); 
-
 // Helper to load pages
 let viewPages = new Set();
 try {
@@ -131,7 +126,7 @@ try {
   } catch (e) {
     console.error('Failed to load view pages:', e);
   }
-}
+
 
 app.post('/search', async function(req, res) {
   try {
