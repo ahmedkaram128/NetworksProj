@@ -54,10 +54,18 @@
         <a href="registration">I dont have an account</a>
     </div>
     <% if (message) { %>
-        <br><br><br><br>
-        <div class="message">
-            <h2><%= message %></h2>
-        </div>
+    <br><br><br><br>
+    <div class="message">
+        <h2>
+        <% if (message === 'successfullLogin') { %>
+            Account regestered succesfully!
+        <% } else if (message === 'expiredSession') { %>
+            You were logged out, please login.
+        <% } else { %>
+            <%= message %>
+        <% } %>
+        </h2>
+    </div>
     <% } %>
 </body>
 </html>

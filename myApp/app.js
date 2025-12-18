@@ -73,7 +73,7 @@ app.post('/register', function(req, res){
 
         if(!insertResult)
           return;  
-      return res.redirect("/?message=Account+regestered+succesfully"); // go to login page if succesfull
+      return res.redirect("/?message=successfullLogin"); // go to login page if succesfull
     })
 
     .catch(err => {
@@ -102,13 +102,13 @@ app.post('/', function(req, res) {
 });
 
 app.get('/home', (req, res) => {
-    if (!req.session.user) return res.redirect('/?message=You+were+logged+out,+please+login+again');
+    if (!req.session.user) return res.redirect('/?message=expiredSession');
     res.render('home',{username: req.session.user.username});  
 });
 
 
 function handleAddDest(req, res, viewName) {
-    if (!req.session.user) return res.redirect("/");
+    if (!req.session.user) return res.redirect("/?message=expiredSession");
     
     const user = req.session.user.username;
 
@@ -138,40 +138,40 @@ function handleAddDest(req, res, viewName) {
 
 // GET Routes
 app.get('/hiking', (req, res) => {
-  if (!req.session.user) return res.redirect('/?message=You+were+logged+out,+please+login+again');
+  if (!req.session.user) return res.redirect('/?message=expiredSession');
   res.render('hiking');
 });
  
 app.get('/cities', (req, res) =>{
-  if (!req.session.user) return res.redirect('/?message=You+were+logged+out,+please+login+again');
+  if (!req.session.user) return res.redirect('/?message=expiredSession');
   res.render('cities');
 });
 app.get('/islands', (req, res) =>{
-  if (!req.session.user) return res.redirect('/?message=You+were+logged+out,+please+login+again');
+  if (!req.session.user) return res.redirect('/?message=expiredSession');
   res.render('islands');
 });
 app.get('/annapurna', (req, res) => {
-  if (!req.session.user) return res.redirect('/?message=You+were+logged+out,+please+login+again');
+  if (!req.session.user) return res.redirect('/?message=expiredSession');
   res.render('annapurna', {message:null});
 });
 app.get('/inca', (req, res) => {
-  if (!req.session.user) return res.redirect('/?message=You+were+logged+out,+please+login+again');
+  if (!req.session.user) return res.redirect('/?message=expiredSession');
   res.render('inca', {message:null});
 });
 app.get('/bali', (req, res) => {
-  if (!req.session.user) return res.redirect('/?message=You+were+logged+out,+please+login+again');
+  if (!req.session.user) return res.redirect('/?message=expiredSession');
   res.render('bali', {message:null});
 });
 app.get('/paris', (req, res) => {
-  if (!req.session.user) return res.redirect('/?message=You+were+logged+out,+please+login+again');
+  if (!req.session.user) return res.redirect('/?message=expiredSession');
   res.render('paris', {message:null});
 });
 app.get('/rome', (req, res) => {
-  if (!req.session.user) return res.redirect('/?message=You+were+logged+out,+please+login+again');
+  if (!req.session.user) return res.redirect('/?message=expiredSession');
   res.render('rome', {message:null});
 });
 app.get('/santorini', (req, res) => {
-  if (!req.session.user) return res.redirect('/?message=You+were+logged+out,+please+login+again');
+  if (!req.session.user) return res.redirect('/?message=expiredSession');
   res.render('santorini', {message:null});
 });
 
@@ -185,7 +185,7 @@ app.post('/santorini', (req, res) => handleAddDest(req, res, "santorini"));
 
 
 app.get('/wanttogo', function(req, res){
-    if (!req.session.user) return res.redirect("/");
+    if (!req.session.user) return res.redirect("/?message=expiredSession");
     const currentUser = req.session.user.username;
 
     db.collection("myCollection").findOne({ username: currentUser })
@@ -231,6 +231,7 @@ let viewPages = [
 
 app.post('/search', function (req, res) {
   try {
+    if (!req.session.user) return res.redirect('/?message=expiredSession');
     const q = (req.body.Search || '').trim().toLowerCase();
 
     if (!q) {
