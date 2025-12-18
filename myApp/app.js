@@ -102,7 +102,7 @@ app.post('/', function(req, res) {
 });
 
 app.get('/home', (req, res) => {
-    if (!req.session.user) return res.redirect("login");
+    if (!req.session.user) return res.redirect('/?message=You+were+logged+out,+please+login+again');
     res.render('home',{username: req.session.user.username});  
 });
 
@@ -173,52 +173,55 @@ app.get('/wanttogo', function(req, res){
         .catch(err => res.status(500).send("Server Error"));
 });
 
-
-
-
-// Helper to load pages
-let viewPages = new Set();
-try {
-    fs.readdirSync(path.join(__dirname, 'views')).forEach(f => {
-        if (f.endsWith('.ejs')) viewPages.add(f.replace(/\.ejs$/, '').toLowerCase());
-    });
-  } catch (e) {
-    console.error('Failed to load view pages:', e);
+let viewPages = [
+  {
+    name: 'Bali Island',
+    slug: 'bali'
+  },
+  {
+    name: 'Paris',
+    slug: 'paris'
+  },
+  {
+    name: 'Rome',
+    slug: 'rome'
+  },
+  {
+    name: 'Santorini Island',
+    slug: 'santorini'
+  },
+  {
+    name: 'Annapurna Circuit',
+    slug: 'annapurna'
+  },
+  {
+    name: 'Inca Trail to Machu Picchu',
+    slug: 'inca'
   }
+];
 
 
-app.post('/search', async function(req, res) {
+app.post('/search', function (req, res) {
   try {
-    const q = (req.body.Search || '').trim();
+    const q = (req.body.Search || '').trim().toLowerCase();
+
     if (!q) {
       return res.render('searchresults', { results: [], query: '' });
     }
-    
-    const results = await db.collection("myCollection")
-      .find({
-        type: 'destination',
-        name: { $regex: q, $options: 'i' }
-      })
-      .limit(50)
-      .toArray();
-   
-    const firstWordSlug = s => (s || '').trim().split(/\s+/)[0].toLowerCase();
-    const enriched = results.map(item => {
-      const slug = item.slug || firstWordSlug(item.name || '');
-      return { ...item, slug };
-    });
-    res.render('searchresults', { results: enriched, query: q });
+
+    const results = viewPages
+      .filter(page => page.name.toLowerCase().includes(q))
+      .map(page => ({
+        name: page.name,
+        slug: page.slug
+      }));
+
+    res.render('searchresults', { results, query: q });
+
   } catch (err) {
     console.error('Search error:', err);
-    res.status(500).render('searchresults', { results: [], query: req.body.Search || '' });
+    res.render('searchresults', { results: [], query: req.body.Search || '' });
   }
-});
-
-
-app.get('/:page', function(req, res, next) {
-  const page = (req.params.page || '').toLowerCase();
-  if (viewPages.has(page)) return res.render(page);
-  return next();
 });
 
 // DB Reset Route (Use once then delete)
