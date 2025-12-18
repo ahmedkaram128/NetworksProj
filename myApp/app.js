@@ -102,7 +102,7 @@ app.post('/', function(req, res) {
 });
 
 app.get('/home', (req, res) => {
-    if (!req.session.user) return res.redirect("login");
+    if (!req.session.user) return res.redirect('/?message=You+were+logged+out,+please+login+again');
     res.render('home',{username: req.session.user.username});  
 });
 
