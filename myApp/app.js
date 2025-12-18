@@ -173,52 +173,74 @@ app.get('/wanttogo', function(req, res){
         .catch(err => res.status(500).send("Server Error"));
 });
 
-
-
-
 // Helper to load pages
 let viewPages = new Set();
 try {
     fs.readdirSync(path.join(__dirname, 'views')).forEach(f => {
         if (f.endsWith('.ejs')) viewPages.add(f.replace(/\.ejs$/, '').toLowerCase());
     });
+    viewPages.delete('cities'); //remove pages that will not be displayed in search
+    viewPages.delete('hiking');
+    viewPages.delete('home');
+    viewPages.delete('islands');
+    viewPages.delete('login');
+    viewPages.delete('registration');
+    viewPages.delete('searchresults');
+    viewPages.delete('wanttogo');
   } catch (e) {
     console.error('Failed to load view pages:', e);
   }
 
 
-app.post('/search', async function(req, res) {
+// app.post('/search', async function(req, res) {
+//   try {
+//     const q = (req.body.Search || '').trim();
+//     if (!q) {
+//       return res.render('searchresults', { results: [], query: '' });
+//     }
+    
+//     const results = await db.collection("myCollection")
+//       .find({
+//         type: 'destination',
+//         name: { $regex: q, $options: 'i' }
+//       })
+//       .limit(50)
+//       .toArray();
+   
+//     const firstWordSlug = s => (s || '').trim().split(/\s+/)[0].toLowerCase();
+//     const enriched = results.map(item => {
+//       const slug = item.slug || firstWordSlug(item.name || '');
+//       return { ...item, slug };
+//     });
+//     res.render('searchresults', { results: enriched, query: q });
+//   } catch (err) {
+//     console.error('Search error:', err);
+//     res.status(500).render('searchresults', { results: [], query: req.body.Search || '' });
+//   }
+// });
+
+app.post('/search', function (req, res) {
   try {
-    const q = (req.body.Search || '').trim();
+    const q = (req.body.Search || '').trim().toLowerCase();
+
     if (!q) {
       return res.render('searchresults', { results: [], query: '' });
     }
-    
-    const results = await db.collection("myCollection")
-      .find({
-        type: 'destination',
-        name: { $regex: q, $options: 'i' }
-      })
-      .limit(50)
-      .toArray();
-   
-    const firstWordSlug = s => (s || '').trim().split(/\s+/)[0].toLowerCase();
-    const enriched = results.map(item => {
-      const slug = item.slug || firstWordSlug(item.name || '');
-      return { ...item, slug };
-    });
-    res.render('searchresults', { results: enriched, query: q });
+
+    // Convert Set → Array and filter
+    const results = Array.from(viewPages)
+      .filter(page => page.includes(q))
+      .map(page => ({
+        name: page,
+        slug: page
+      }));
+
+    res.render('searchresults', { results, query: q });
+
   } catch (err) {
     console.error('Search error:', err);
-    res.status(500).render('searchresults', { results: [], query: req.body.Search || '' });
+    res.render('searchresults', { results: [], query: req.body.Search || '' });
   }
-});
-
-
-app.get('/:page', function(req, res, next) {
-  const page = (req.params.page || '').toLowerCase();
-  if (viewPages.has(page)) return res.render(page);
-  return next();
 });
 
 // DB Reset Route (Use once then delete)
