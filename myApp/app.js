@@ -137,15 +137,43 @@ function handleAddDest(req, res, viewName) {
 }
 
 // GET Routes
-app.get('/hiking', (req, res) => res.render('hiking'));
-app.get('/cities', (req, res) => res.render('cities'));
-app.get('/islands', (req, res) => res.render('islands'));
-app.get('/annapurna', (req, res) => res.render('annapurna', {message:null}));
-app.get('/inca', (req, res) => res.render('inca', {message:null}));
-app.get('/bali', (req, res) => res.render('bali', {message:null}));
-app.get('/paris', (req, res) => res.render('paris', {message:null}));
-app.get('/rome', (req, res) => res.render('rome', {message:null}));
-app.get('/santorini', (req, res) => res.render('santorini', {message:null}));
+app.get('/hiking', (req, res) => {
+  if (!req.session.user) return res.redirect('/?message=You+were+logged+out,+please+login+again');
+  res.render('hiking');
+});
+ 
+app.get('/cities', (req, res) =>{
+  if (!req.session.user) return res.redirect('/?message=You+were+logged+out,+please+login+again');
+  res.render('cities');
+});
+app.get('/islands', (req, res) =>{
+  if (!req.session.user) return res.redirect('/?message=You+were+logged+out,+please+login+again');
+  res.render('islands');
+});
+app.get('/annapurna', (req, res) => {
+  if (!req.session.user) return res.redirect('/?message=You+were+logged+out,+please+login+again');
+  res.render('annapurna', {message:null});
+});
+app.get('/inca', (req, res) => {
+  if (!req.session.user) return res.redirect('/?message=You+were+logged+out,+please+login+again');
+  res.render('inca', {message:null});
+});
+app.get('/bali', (req, res) => {
+  if (!req.session.user) return res.redirect('/?message=You+were+logged+out,+please+login+again');
+  res.render('bali', {message:null});
+});
+app.get('/paris', (req, res) => {
+  if (!req.session.user) return res.redirect('/?message=You+were+logged+out,+please+login+again');
+  res.render('paris', {message:null});
+});
+app.get('/rome', (req, res) => {
+  if (!req.session.user) return res.redirect('/?message=You+were+logged+out,+please+login+again');
+  res.render('rome', {message:null});
+});
+app.get('/santorini', (req, res) => {
+  if (!req.session.user) return res.redirect('/?message=You+were+logged+out,+please+login+again');
+  res.render('santorini', {message:null});
+});
 
 //post 
 app.post('/annapurna', (req, res) => handleAddDest(req, res, "annapurna"));
